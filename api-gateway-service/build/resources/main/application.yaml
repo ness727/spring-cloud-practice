@@ -8,8 +8,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
-    lease-renewal-interval-in-seconds: 1 #???? ??? (?? 30?)
-    lease-expiration-duration-in-seconds: 2 # ?????? ??? ?? ?? ?? ?? ??? ???????? 2? ???
+    lease-renewal-interval-in-seconds: 1 # 디스커버리한테 1초마다 하트비트 전송  (기본 30초)
+    lease-expiration-duration-in-seconds: 2 # 디스커버리는 서비스 등록 해제 하기 전에 마지막 하트비트에서부터 2초 기다림
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
 
 spring:
@@ -24,6 +24,48 @@ spring:
             preLogger: true
             postLogger: true
       routes:
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/**
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        - id: catalog-service
+          uri: lb://CATALOG-SERVICE
+          predicates:
+            - Path=/catalog-service/**
+
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+
         - id: first-service
           uri: lb://FIRST-SERVICE
           predicates:
@@ -32,6 +74,7 @@ spring:
             # - AddRequestHeader=first-request, first-request-header2
             # - AddResponseHeader=first-response, first-response-header2
             - CustomFilter
+
         - id: second-service
           uri: lb://SECOND-SERVICE
           predicates:
