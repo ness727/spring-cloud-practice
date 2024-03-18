@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -31,14 +32,17 @@ public class WebSecurity {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .userDetailsService(userService)
-                .formLogin(f -> f
-                        .defaultSuccessUrl("/welcome", true)
-                        .usernameParameter("email")
-                )
+//                .formLogin(f -> f
+//                        .defaultSuccessUrl("/welcome", true)
+//                        .usernameParameter("email")
+//                )
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(r -> r
                         .requestMatchers(antMatcher(HttpMethod.POST, "/users"), antMatcher("/health_check"),
                                 antMatcher("/welcome"), antMatcher("/login")).permitAll()
+                        .requestMatchers("/**").access(
+                                new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1')")
+                        )
                         .anyRequest().authenticated()
                 )
                 .addFilter(getAuthenticationFilter())
