@@ -33,3 +33,11 @@ eureka:
 
 greeting:
   message: Welcome to the Simple E-commerce!
+
+logging:
+  level:
+    com.megamaker.userservice: debug
+
+token:
+  expiration_time: 86400000
+  secret: test12341234@test1234567890.com
