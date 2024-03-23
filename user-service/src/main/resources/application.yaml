@@ -38,6 +38,6 @@ logging:
   level:
     com.megamaker.userservice: debug
 
-token:
-  expiration_time: 86400000
-  secret: test12341234@test1234567890.com
+#token:
+#  expiration_time: 86400000
+#  secret: test12341234@test1234567890.com

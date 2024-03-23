@@ -69,21 +69,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         //byte[] secret = Base64.getEncoder().encode(environment.getProperty("token.secret").getBytes());
 
-//        String token = Jwts.builder()
+//        String secretKey = Jwts.builder()
 //                .setSubject(userDto.getUserId())
 //                .setExpiration(new Date(System.currentTimeMillis() +
 //                        Long.parseLong(environment.getProperty("token.expiration_time"))))
-//                .signWith(SignatureAlgorithm.HS256, secret)
+//                .signWith(SignatureAlgorithm.HS256, secretKey)
 //                .compact();
 
-        Key secret = new SecretKeySpec(Base64.getEncoder().encode(environment.getProperty("token.secret").getBytes()),
+        Key secretKey = new SecretKeySpec(Base64.getEncoder().encode(environment.getProperty("token.secret").getBytes()),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
 
         String token = Jwts.builder()
                 .subject(userDto.getUserId())
                 .expiration(new Date(System.currentTimeMillis() +
                         Long.parseLong(environment.getProperty("token.expiration_time"))))
-                .signWith(secret)
+                .signWith(secretKey)
                 .compact();
 
         response.addHeader("token", token);

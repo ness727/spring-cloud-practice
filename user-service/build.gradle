@@ -58,8 +58,9 @@ dependencies {
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-    implementation 'io.jsonwebtoken:jjwt:0.12.3'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+
 
     // h2 DB
     runtimeOnly 'com.h2database:h2:2.2.224'
