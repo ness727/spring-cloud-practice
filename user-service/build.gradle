@@ -61,6 +61,13 @@ dependencies {
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 
+    // Spring Cloud Config / Bootstrap
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    //implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+    // Spring Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 
     // h2 DB
     runtimeOnly 'com.h2database:h2:2.2.224'

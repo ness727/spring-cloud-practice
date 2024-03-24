@@ -39,7 +39,8 @@ public class WebSecurity {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(r -> r
                         .requestMatchers(antMatcher(HttpMethod.POST, "/users"), antMatcher("/health_check"),
-                                antMatcher("/welcome"), antMatcher("/login")).permitAll()
+                                antMatcher("/welcome"), antMatcher("/login"),
+                                antMatcher("/actuator/**")).permitAll()
                         .requestMatchers("/**").access(
                                 new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1')")
                         )
