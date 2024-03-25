@@ -78,7 +78,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Key secretKey = new SecretKeySpec(Base64.getEncoder().encode(environment.getProperty("token.secret").getBytes()),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
-
+        log.info(environment.getProperty("token.secret"));
         String token = Jwts.builder()
                 .subject(userDto.getUserId())
                 .expiration(new Date(System.currentTimeMillis() +

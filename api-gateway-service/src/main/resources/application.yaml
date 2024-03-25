@@ -20,10 +20,13 @@ spring:
 
   config:
     import: optional:configserver:http://localhost:8888
+#  profiles:
+#    active: dev
 
   cloud:
     config:
       name: ecommerce
+      profile: dev
     gateway:
       default-filters:
         - name: GlobalFilter
