@@ -5,15 +5,26 @@ spring:
   application:
     name: user-service
 
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/testdb
-    username: sa
-    password:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: guest
+      password: guest
+
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/testdb
+#    username: sa
+#    password:
 
   cloud:
     config:
-      name: ecommerce
+      name: user-service
+#      name: ecommerce
+#      profile: dev
+#  profiles:
+#    active: dev
   config:
     import: optional:configserver:http://localhost:8888
 
@@ -52,4 +63,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, info
+        include: refresh, health, beans, info, busrefresh

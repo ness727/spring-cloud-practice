@@ -74,6 +74,8 @@ dependencies {
     // Spring Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-bus-amqp
+    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
     // h2 DB
     runtimeOnly 'com.h2database:h2:2.2.224'
