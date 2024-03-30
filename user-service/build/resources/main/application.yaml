@@ -57,7 +57,7 @@ greeting:
 
 logging:
   level:
-    com.megamaker.userservice: debug
+    com.megamaker.userservice.client: debug
 
 management:
   endpoints:
