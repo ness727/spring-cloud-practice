@@ -19,7 +19,7 @@ import java.util.Map;
 public class KafkaConsumer {
     public final CatalogRepository catalogRepository;
 
-    @KafkaListener(topics = "example-catlaog-topic")
+    @KafkaListener(topics = "example-catalog-topic")
     public void updateQty(String kafkaMessage) {
         log.info("Kafka Message: -> {}", kafkaMessage);
 
@@ -32,7 +32,7 @@ public class KafkaConsumer {
             e.printStackTrace();
         }
 
-        CatalogEntity entity = catalogRepository.findByProductId((String) map.get("productid"));
+        CatalogEntity entity = catalogRepository.findByProductId((String) map.get("productId"));
         if (entity != null) {
             entity.setStock(entity.getStock() - (Integer)map.get("qty"));
             catalogRepository.save(entity);

@@ -3,6 +3,7 @@ package com.megamaker.orderservice.controller;
 import com.megamaker.orderservice.dto.OrderDto;
 import com.megamaker.orderservice.jpa.OrderEntity;
 import com.megamaker.orderservice.mapper.OrderMapper;
+import com.megamaker.orderservice.messagequeue.KafkaProducer;
 import com.megamaker.orderservice.service.OrderService;
 import com.megamaker.orderservice.vo.RequestOrder;
 import com.megamaker.orderservice.vo.ResponseOrder;
@@ -21,6 +22,7 @@ import java.util.List;
 public class OrderController {
     private final Environment env;
     private final OrderService orderService;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping("/health_check")
     public String status() {
@@ -30,11 +32,17 @@ public class OrderController {
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId,
                                                      @RequestBody RequestOrder requestOrder) {
+
+        // JPA
         OrderDto orderDto = OrderMapper.INSTANCE.toOrderDto(requestOrder);
         orderDto.setUserId(userId);
         orderService.createOrder(orderDto);
 
         ResponseOrder responseOrder = OrderMapper.INSTANCE.toResponseOrder(orderDto);
+
+        // send this order to the kafka
+        kafkaProducer.send("example-catalog-topic", orderDto);
+
         return ResponseEntity.created(URI.create("test")).body(responseOrder);
     }
 
